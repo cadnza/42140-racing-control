@@ -70,7 +70,7 @@ while True:
 	# Neither forward or backward pressed
 	else:
 		# Both or neither of left turn and right turn pressed
-		if (Button.RIGHT_PLUS in pressed and Button.RIGHT_DOWN in pressed) or (Button.RIGHT_PLUS not in pressed and Button.RIGHT_DOWN not in pressed):
+		if (Button.RIGHT_PLUS in pressed and Button.RIGHT_MINUS in pressed) or (Button.RIGHT_PLUS not in pressed and Button.RIGHT_MINUS not in pressed):
 			left_motor.brake()
 			right_motor.brake()
 		# Left turn pressed
