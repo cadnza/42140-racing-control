@@ -19,7 +19,7 @@ TIMEOUT_MS = TIMEOUT_MINS * 60 * 1000
 
 # Set speeds and speed index
 speeds = [400, 800, 2000]
-SPEED_INDEX = 2
+SPEED_INDEX = 2  # TODO: Make this variable
 
 # Set turn parameter ratio
 TURN_PARAMETER_RATIO = 2
