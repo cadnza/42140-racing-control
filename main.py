@@ -1,6 +1,7 @@
+from umath import floor
 from pybricks.hubs import TechnicHub
 from pybricks.pupdevices import Motor, Remote
-from pybricks.parameters import Port, Button, Color, Side, Direction
+from pybricks.parameters import Port, Button, Color, Direction
 from pybricks.tools import wait, StopWatch
 
 # Initialize the hub, motors, and remote
@@ -9,12 +10,30 @@ left_motor = Motor(Port.A, positive_direction=Direction.COUNTERCLOCKWISE)
 right_motor = Motor(Port.B)
 remote = Remote()
 
+# Initialize stopwatch
+sw = StopWatch()
+
+# Set inactivity timeout
+timeout_mins = 2
+timeout_ms = timeout_mins * 60 * 1000
+
 # Set speeds and speed index
 speeds = [400, 800, 2000]
 speed_index = 2  # TODO: Make this variable
 
 # Set turn parameter ratio
 turn_parameter_ratio = 2
+
+# Set time elapse colors in descending order to time elapsed to inactivity
+elapse_colors = [
+	Color.WHITE,
+	Color.VIOLET,
+	Color.BLUE,
+	Color.GREEN,
+	Color.YELLOW,
+	Color.ORANGE,
+	Color.RED,
+]
 
 # Get buttons pressed
 pressed = remote.buttons.pressed()
@@ -81,6 +100,19 @@ while True:
 		if Button.RIGHT_PLUS in pressed:
 			left_motor.run(-turn_parameter)
 			right_motor.run(turn_parameter)
+
+	# Color lights on vehicle and remote according to timeout
+	index_current_timeout_color = floor(
+		sw.time() / (timeout_ms / len(elapse_colors))
+	)
+	hub.light.on(elapse_colors[index_current_timeout_color])
+	remote.light.on(elapse_colors[index_current_timeout_color])
+
+	# Shut down on timeout
+	if pressed:
+		sw.reset()
+	if sw.time() > timeout_ms:
+		hub.system.shutdown()
 
 	# Be nice to the CPU
 	wait(10)
